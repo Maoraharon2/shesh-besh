@@ -1,3 +1,5 @@
+from time import sleep
+
 import streamlit as st
 
 def header(string):
@@ -58,14 +60,11 @@ def main():
         return
     st.divider()
 
-    # ניקוד כללי של משחקים
     header("משחקים")
     matches_col1, matches_col2 = st.columns(2)
     with matches_col1:
         header(f"{player1_name}: {st.session_state.matches_score['player1']}")
-        st.write(f"**{player1_name}: {st.session_state.matches_score['player1']}**")
     with matches_col2:
-        # st.write(f"**{player2_name}: {st.session_state.matches_score['player2']}**")
         header(f"{player2_name}: {st.session_state.matches_score['player2']}")
     st.divider()
 
@@ -77,6 +76,7 @@ def main():
             st.session_state.current_game_history.append(f"{player1_name} זכה במשחקון")
             if st.session_state.player1_score >= 3:
                 st.balloons()
+                sleep(1)
                 st.success(f"🏆 {player1_name} ניצח במשחק!")
                 st.session_state.matches_score['player1'] += 1
                 # שמירת המשחק בהיסטוריה
@@ -100,9 +100,9 @@ def main():
             st.session_state.current_game_history.append(f"{player2_name} זכה במשחקון")
             if st.session_state.player2_score >= 3:
                 st.balloons()
+                sleep(1)
                 st.success(f"🏆 {player2_name} ניצח במשחק!")
                 st.session_state.matches_score['player2'] += 1
-                # שמירת המשחק בהיסטוריה
                 game_summary = {
                     'player1': player1_name,
                     'player2': player2_name,
@@ -111,13 +111,11 @@ def main():
                     'history': st.session_state.current_game_history.copy()
                 }
                 st.session_state.games_history.append(game_summary)
-                # איפוס המשחק הנוכחי
                 st.session_state.player1_score = 0
                 st.session_state.player2_score = 0
                 st.session_state.current_game_history = []
                 st.rerun()
 
-    # היסטוריית המשחק הנוכחי
     st.divider()
     st.header("היסטוריית המשחק הנוכחי")
     for event in st.session_state.current_game_history:
